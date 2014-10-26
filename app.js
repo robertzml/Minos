@@ -4,15 +4,28 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var swig = require('swig');
+var moment = require('moment');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
 
+// This is where all the magic happens!
+app.engine('html', swig.renderFile);
+
+
+// Swig will cache templates for you, but you can disable
+// that and use Express's caching instead, if you like:
+//app.set('view cache', false);
+// To disable Swig's cache, do the following:
+swig.setDefaults({ cache: false });
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+app.set('view engine', 'html');
+
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
