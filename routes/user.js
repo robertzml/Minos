@@ -35,6 +35,10 @@ router.post('/login', function(req, res) {
 
         } else {
             if (result.password == sha1sum) {
+
+                req.session.username = result.name;
+                req.session.userGroupId = result.userGroupId;
+
                 res.redirect('/');
             } else {
                 res.locals.error = '密码错误';
@@ -45,5 +49,12 @@ router.post('/login', function(req, res) {
     });
 
 });
+
+
+router.get('/logout', function(req, res) {
+    req.session.destroy();
+    res.redirect('/login');
+});
+
 
 module.exports = router;
