@@ -36,7 +36,9 @@ router.post('/login', function(req, res) {
         } else {
             if (result.password == sha1sum) {
 
-                req.session.username = result.name;
+                req.session.userid = result.id;
+                req.session.name = result.name;
+                req.session.username = result.userName;
                 req.session.userGroupId = result.userGroupId;
 
                 res.redirect('/');

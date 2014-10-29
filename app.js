@@ -25,6 +25,16 @@ app.engine('html', swig.renderFile);
 // To disable Swig's cache, do the following:
 swig.setDefaults({ cache: false });
 
+swig.setFilter('moment', function (input, t) {
+    if (t == 'dt') {
+        return moment(input).format("YYYY-MM-DD HH:mm:ss");
+    } else {
+        return input;
+    }
+});
+
+
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'html');
@@ -74,5 +84,9 @@ app.use(function(err, req, res, next) {
     });
 });
 
+
+app.locals.momentDateTime = function(datetime) {
+    return moment(datetime).format("YYYY-MM-DD HH:mm:ss");
+}
 
 module.exports = app;

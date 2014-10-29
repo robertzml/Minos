@@ -4,17 +4,38 @@ var Minos = function() {
 
     var handleBuildingList = function($dom) {
 
-
-        var url = 'http://localhost:11621/api/building/200001';
+        var url = 'http://202.195.145.230:8001/api/building';
         $.ajax({
             type: 'get',
             url: url,
             dataType: 'json',
-            contentType: 'application/json',
-            success: function (data, textStatus) {
-                // data 可能是 xmlDoc, jsonObj, html, text, 等等...
+            contentType: 'application/json'
+        }).success(function (data, textStatus) {
+            $dom.append("<option data-name='' value=''></option>");
 
-            }
+            $.each(data, function(i, item) {
+               var option = $('<option/>')
+                   .attr('data-name', item.Name)
+                   .val(item.Id)
+                   .text(item.Name);
+                $dom.append(option);
+            });
+
+            $dom.select2({
+                placeholder: "选择建筑",
+                allowClear: true
+            }).on("change", function(e) {
+
+                if (e.added) {
+                    var option = $(e.added.element[0]);
+                    $('#building-name').val(option.attr('data-name'));
+
+                } else {
+                    $('#building-name').val('');
+                }
+
+            });
+
         }).error(function (jqXHR, textStatus, errorThrown) {
             console.log(jqXHR.responseText || textStatus);
         });
@@ -68,6 +89,8 @@ var Minos = function() {
             submitHandler: function (form) {
                 success1.show();
                 error1.hide();
+
+                $('textarea[name="task-content"]').val($('#summernote').code());
                 form.submit(); // form validation success, call ajax form submit
             }
         });
@@ -80,6 +103,42 @@ var Minos = function() {
         //API:
         //var sHTML = $('#summernote_1').code(); // get code
         //$('#summernote_1').destroy(); // destroy
+    }
+
+    /* just init the datatable */
+    var handleInitDatatable = function($dom) {
+
+        var oTable = $dom.dataTable({
+            "order": [],
+
+            "lengthMenu": [
+                [5, 10, 20, -1],
+                [5, 10, 20, "All"] // change per page values here
+            ],
+            // set the initial value
+            "pageLength": 10,
+
+            "pagingType": "bootstrap_full_number",
+
+            "language": {
+                "lengthMenu": "  _MENU_ 记录",
+                "sLengthMenu": "每页 _MENU_ 条记录",
+                "sInfo": "显示 _START_ 至 _END_ 共有 _TOTAL_ 条记录",
+                "sInfoEmpty": "记录为空",
+                "sInfoFiltered": " - 从 _MAX_ 条记录中",
+                "sZeroRecords": "结果为空",
+                "sSearch": "搜索:",
+                "paginate": {
+                    "previous":"Prev",
+                    "next": "Next",
+                    "last": "Last",
+                    "first": "First"
+                }
+            },
+
+            "dom": "<'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12' p>>", // horizobtal scrollable datatable
+        });
+        return oTable;
     }
 
     return {
@@ -95,7 +154,7 @@ var Minos = function() {
         },
 
         loadBuildingList: function($dom) {
-
+            handleBuildingList($dom);
         },
 
         initSummernote: function($dom) {
@@ -104,9 +163,16 @@ var Minos = function() {
 
 
         initDeliveryForm: function() {
-            handleBuildingList();
-            handleSummernote($('#taskcontent'));
+            handleSummernote($('#summernote'));
             handleDeliveryForm();
+        },
+
+        initDatatable: function($dom) {
+            return handleInitDatatable($dom);
+        },
+
+        parseDatetime: function(dt) {
+            return moment(dt).format("YYYY-MM-DD HH:mm:ss");
         }
     }
 }();

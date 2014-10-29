@@ -1,0 +1,45 @@
+{% extends '../layout.html' %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="/assets/global/plugins/bootstrap-summernote/summernote.css">
+{% endblock %}
+
+{% block title %}
+<div class="page-title">
+    <h1><i class="fa fa-paper-plane fa-lg"></i>&nbsp;{{ title }} <small>电表网关维修</small></h1>
+</div>
+{% endblock %}
+
+{% block body %}
+<div class="portlet light bordered">
+    <div class="portlet-title">
+        <div class="caption">
+            <i class="fa fa-list"></i>&nbsp;任务列表
+        </div>
+        <div class="tools">
+            <a href="javascript:;" class="collapse">
+            </a>
+            <a href="#portlet-config" data-toggle="modal" class="config">
+            </a>
+            <a href="javascript:;" class="reload">
+            </a>
+            <a href="javascript:;" class="remove">
+            </a>
+        </div>
+    </div>
+    <div class="portlet-body">
+        {% set tasks = { tasks: data } %}
+        {% include "_list.html" with tasks only %}
+    </div>
+</div>
+{% endblock %}
+
+
+{% block script %}
+<script type="text/javascript">
+    $(function() {
+        Minos.menuActive($('#task-take-menu'));
+
+    });
+</script>
+{% endblock %}

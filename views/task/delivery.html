@@ -41,12 +41,13 @@
                     Your form validation is successful!
                 </div>
                 <h3 class="form-section">位置信息</h3>
+                <input type="hidden" id="building-name" name="building-name">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label col-md-3">建筑</label>
                             <div class="col-md-8">
-                                <input type="text" class="form-control" name="building">
+                                <select class="form-control" id="building" name="building"></select>
                             </div>
                         </div>
                     </div>
@@ -100,8 +101,7 @@
                         <div class="form-group">
                             <label class="control-label col-md-2">说明</label>
                             <div class="col-md-9">
-                                <div name="taskcontent" id="taskcontent">
-                                </div>
+                                <textarea class="" id="summernote" name="task-content" rows="5"></textarea>
                             </div>
                         </div>
                     </div>
@@ -138,6 +138,7 @@
     $(function() {
         Minos.menuActive($('#task-delivery-menu'));
 
+        Minos.loadBuildingList($('#building'));
         Minos.initDeliveryForm();
     });
 </script>
