@@ -126,11 +126,6 @@
                                                     <i class="fa fa-angle-right"></i>
                                                     Font Icons </a>
                                             </li>
-                                            <li>
-                                                <a href="ui_notific8.html">
-                                                    <i class="fa fa-angle-right"></i>
-                                                    Notific8 Notifications </a>
-                                            </li>
                                         </ul>
                                     </div>
                                     <div class="col-md-3">
@@ -204,74 +199,50 @@
                         </li>
                     </ul>
                 </li>
-                <li class="menu-dropdown classic-menu-dropdown ">
-                    <a data-toggle="dropdown" href="javascript:;">
-                        Extra <i class="fa fa-angle-down"></i>
+                {% if userGroupId == 100001 %}
+                <li class="menu-dropdown mega-menu-dropdown top-level-menu">
+                    <a data-toggle="dropdown" href="javascript:;" class="dropdown-toggle">
+                        系统管理 <i class="fa fa-angle-down"></i>
                     </a>
-                    <ul class="dropdown-menu pull-left">
-                        <li class=" dropdown-submenu">
-                            <a href=":;">
-                                <i class="icon-briefcase"></i>
-                                Data Tables </a>
-                            <ul class="dropdown-menu">
-                                <li class=" ">
-                                    <a href="table_basic.html">
-                                        Basic Datatables </a>
-                                </li>
-                                <li class=" ">
-                                    <a href="table_managed.html">
-                                        Managed Datatables </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class=" dropdown-submenu">
-                            <a href=":;">
-                                <i class="icon-wallet"></i>
-                                Portlets </a>
-                            <ul class="dropdown-menu">
-                                <li class=" ">
-                                    <a href="portlet_general.html">
-                                        General Portlets </a>
-                                </li>
-                                <li class=" ">
-                                    <a href="portlet_general2.html">
-                                        New Portlets #1 <span class="badge badge-roundless badge-danger">new</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class=" dropdown-submenu">
-                            <a href=":;">
-                                <i class="icon-bar-chart"></i>
-                                Charts </a>
-                            <ul class="dropdown-menu">
-                                <li class=" ">
-                                    <a href="charts_amcharts.html">
-                                        Amchart </a>
-                                </li>
-                                <li class=" ">
-                                    <a href="charts_flotcharts.html">
-                                        Flotchart </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class=" dropdown-submenu">
-                            <a href=":;">
-                                <i class="icon-pointer"></i>
-                                Maps </a>
-                            <ul class="dropdown-menu">
-                                <li class=" ">
-                                    <a href="maps_google.html">
-                                        Google Maps </a>
-                                </li>
-                                <li class=" ">
-                                    <a href="maps_vector.html">
-                                        Vector Maps </a>
-                                </li>
-                            </ul>
+                    <ul class="dropdown-menu" style="min-width: 400px">
+                        <li>
+                            <div class="mega-menu-content">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <ul class="mega-menu-submenu">
+                                            <li>
+                                                <h3>用户管理</h3>
+                                            </li>
+                                            <li>
+                                                <a href="/user/list" id="user-list-menu" class="iconify">
+                                                    <i class="fa fa-users"></i>
+                                                    用户列表 </a>
+                                            </li>
+                                            <li>
+                                                <a href="/user/create" id="user-create-menu" class="iconify">
+                                                    <i class="fa fa-user-md"></i>
+                                                    添加用户 </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <ul class="mega-menu-submenu">
+                                            <li>
+                                                <h3>系统设置</h3>
+                                            </li>
+                                            <li>
+                                                <a href="#"  class="iconify">
+                                                    <i class="fa fa-gear"></i>
+                                                    任务设置 </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
                         </li>
                     </ul>
                 </li>
+            {% endif %}
             </ul>
         </div>
         <!-- END MEGA MENU -->

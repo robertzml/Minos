@@ -48,9 +48,6 @@ router.get('/details/:id', function(req, res) {
             throw new Error('Not Found');
         }
 
-        //result.taskContent = decodeContent(result.taskContent);
-        //result.feedback.content = decodeContent(result.feedback.content);
-
         res.render('task/details', { title: '任务信息', data: result });
     });
 });
@@ -71,7 +68,6 @@ router.post('/delivery', function(req, res) {
     var gateway = req.body['gateway'];
     var ammeter = req.body['ammeter'];
     var title = req.body['title'];
-    //var taskContent = encodeContent(req.body['task-content']);
     var taskContent = req.body['task-content'];
     var time = moment().toISOString()
     var type = 1;
@@ -119,9 +115,6 @@ router.get('/mine-details/:id', function(req, res) {
             throw new Error('Not Found');
         }
 
-        //result.taskContent = decodeContent(result.taskContent);
-        //result.feedback.content = decodeContent(result.feedback.content);
-
         res.render('task/mine-details', { title: '任务信息', data: result });
     });
 });
@@ -145,9 +138,6 @@ router.get('/take-details/:id', function(req, res) {
         if (result == null) {
             throw new Error('Not Found');
         }
-
-        //result.taskContent = decodeContent(result.taskContent);
-        //result.feedback.content = decodeContent(result.feedback.content);
 
         res.render('task/take-details', { title: '任务信息', data: result });
     });
@@ -179,7 +169,6 @@ router.post('/take', function(req, res) {
 router.post('/feedback', function(req, res) {
     var id = req.body['id'];
     var type = req.body['feedback-type'];
-    //var content = encodeContent(req.body['feedback-content']);
     var content = req.body['feedback-content'];
     var time = moment().toISOString();
 
