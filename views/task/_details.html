@@ -50,14 +50,71 @@
         <!--/span-->
     </div>
     <!--/row-->
-    <h3 class="form-section">任务说明</h3>
+    <h3 class="form-section">任务信息</h3>
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
-                <div class="col-md-offset-3 col-md-9">
-                    <div>
+                <label class="control-label col-md-3">发布时间:</label>
+                <div class="col-md-9">
+                    <p class="form-control-static">
+                        {{ task.delivery.time|moment('dt') }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label col-md-3">领取时间:</label>
+                <div class="col-md-9">
+                    <p class="form-control-static">
+                        {{ task.take.time|moment('dt') }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label col-md-3">发布人:</label>
+                <div class="col-md-9">
+                    <p class="form-control-static">
+                        {{ task.delivery.userName }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label col-md-3">领取人:</label>
+                <div class="col-md-9">
+                    <p class="form-control-static">
+                        {{ task.take.userName }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label col-md-3">发布信息:</label>
+                <div class="col-md-9">
+                    <div class="task-text">
                         {% autoescape false %}
                         {{ task.taskContent }}
+                        {% endautoescape %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label col-md-3">反馈信息:</label>
+                <div class="col-md-9">
+                    <div class="task-text">
+                        {% autoescape false %}
+                        {{ task.feedback.content }}
                         {% endautoescape %}
                     </div>
                 </div>

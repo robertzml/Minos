@@ -90,7 +90,7 @@ var Minos = function() {
                 success1.show();
                 error1.hide();
 
-                $('textarea[name="task-content"]').val($('#summernote').code());
+                //$('textarea[name="task-content"]').val($('#summernote').code());
                 form.submit(); // form validation success, call ajax form submit
             }
         });
@@ -144,14 +144,25 @@ var Minos = function() {
                 success1.show();
                 error1.hide();
 
-                //$('textarea[name="feedback-content"]').val($('#summernote').code());
                 form.submit(); // form validation success, call ajax form submit
             }
         });
     }
 
     var handleSummernote = function ($dom) {
-        $dom.summernote({height: 300});
+        $dom.summernote({
+            height: 300,
+            toolbar: [
+                //[groupname, [button list]]
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['font', ['strikethrough']],
+                ['style', ['fontsize', 'fontname', 'color']],
+                ['para', ['hr', 'ul', 'ol', 'paragraph']],
+                ['insert', ['table']],
+                ['height', ['height']],
+                ['misc', ['redo', 'undo']]
+            ]
+        });
         //API:
         //var sHTML = $('#summernote_1').code(); // get code
         //$('#summernote_1').destroy(); // destroy
@@ -193,6 +204,62 @@ var Minos = function() {
         return oTable;
     }
 
+    /* filter table */
+    var handleInitDatatable2 = function($dom) {
+
+        var oTable = $dom.dataTable({
+            "order": [],
+
+            "lengthMenu": [
+                [5, 10, 20, -1],
+                [5, 10, 20, "All"] // change per page values here
+            ],
+            // set the initial value
+            "pageLength": 10,
+
+            "pagingType": "bootstrap_full_number",
+
+            "language": {
+                "lengthMenu": "  _MENU_ 记录",
+                "sLengthMenu": "每页 _MENU_ 条记录",
+                "sInfo": "显示 _START_ 至 _END_ 共有 _TOTAL_ 条记录",
+                "sInfoEmpty": "记录为空",
+                "sInfoFiltered": " - 从 _MAX_ 条记录中",
+                "sZeroRecords": "结果为空",
+                "sSearch": "搜索:",
+                "paginate": {
+                    "previous":"Prev",
+                    "next": "Next",
+                    "last": "Last",
+                    "first": "First"
+                }
+            },
+
+            "dom": "<'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12' p>>", // horizobtal scrollable datatable
+        });
+
+        $dom.find("tfoot th").each(function (i) {
+            if ($(this).attr('data-filter') == 'true') {
+
+                var select = $('<select class="form-control"><option value=""></option></select>')
+                    .appendTo($(this).empty())
+                    .on('change', function () {
+                        var val = $(this).val();
+
+                        oTable.api().column(i)
+                            .search(val ? '^' + $(this).val() + '$' : val, true, false)
+                            .draw();
+                    });
+
+                oTable.api().column(i).data().unique().sort().each(function (d, j) {
+                    select.append('<option value="' + d + '">' + d + '</option>')
+                });
+            }
+        });
+
+        return oTable;
+    }
+
 
     return {
         menuActive: function($dom) {
@@ -210,7 +277,7 @@ var Minos = function() {
             handleBuildingList($dom);
         },
 
-        initSummernote: function($dom) {
+        initSummernote: function($dom, content) {
             handleSummernote($dom);
         },
 
@@ -221,11 +288,16 @@ var Minos = function() {
         },
 
         initFeedbackForm: function() {
+            handleSummernote($('#summernote'));
             handleFeedbackForm();
         },
 
         initDatatable: function($dom) {
             return handleInitDatatable($dom);
+        },
+
+        initDatatableWithFilter: function($dom) {
+            return handleInitDatatable2($dom);
         },
 
         parseDatetime: function(dt) {

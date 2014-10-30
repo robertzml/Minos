@@ -4,10 +4,11 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var swig = require('swig');
 var moment = require('moment');
 var session = require('express-session');
+var swig = require('swig');
 
+var swigFilter = require('./lib/swigFilter');
 
 var routes = require('./routes/index');
 var user = require('./routes/user');
@@ -25,13 +26,8 @@ app.engine('html', swig.renderFile);
 // To disable Swig's cache, do the following:
 swig.setDefaults({ cache: false });
 
-swig.setFilter('moment', function (input, t) {
-    if (t == 'dt') {
-        return moment(input).format("YYYY-MM-DD HH:mm:ss");
-    } else {
-        return input;
-    }
-});
+swig.setFilter('moment', swigFilter.moment);
+swig.setFilter('status', swigFilter.status);
 
 
 
@@ -84,6 +80,21 @@ app.use(function(err, req, res, next) {
     });
 });
 
+// a middleware with no mount path, gets executed for every request to the router
+// check login middleware
+app.use(function (req, res, next) {
+
+    if(req.session.username) {
+        app.locals.username = req.session.username;
+        next();
+    } else {
+        if (req.originalUrl == '/user/login')
+            next();
+        else
+            res.redirect('/user/login');
+    }
+
+});
 
 app.locals.momentDateTime = function(datetime) {
     return moment(datetime).format("YYYY-MM-DD HH:mm:ss");

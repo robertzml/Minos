@@ -5,16 +5,29 @@ var router = express.Router();
 var moment = require('moment');
 
 //var status = require('../models/entitystatus');
-var mongodb = require('../models/mongodb');
+var mongodb = require('../lib/mongodb');
 
 var taskCollection = 'task';
 
 
 function decodeContent(content) {
+    if (content == null || content == '')
+        return '';
+
     var Encoder = require('node-html-encoder').Encoder;
     var encoder = new Encoder('entity');
     return encoder.htmlDecode(content);
 }
+
+function encodeContent(content) {
+    if (content == null || content == '')
+        return '';
+
+    var Encoder = require('node-html-encoder').Encoder;
+    var encoder = new Encoder('entity');
+    return encoder.htmlEncode(content);
+}
+
 
 // 任务总览
 router.get('/', function(req, res) {
@@ -35,7 +48,8 @@ router.get('/details/:id', function(req, res) {
             throw new Error('Not Found');
         }
 
-        result.taskContent = decodeContent(result.taskContent);
+        //result.taskContent = decodeContent(result.taskContent);
+        //result.feedback.content = decodeContent(result.feedback.content);
 
         res.render('task/details', { title: '任务信息', data: result });
     });
@@ -51,16 +65,14 @@ router.get('/delivery', function(req, res) {
 // 任务下发
 router.post('/delivery', function(req, res) {
 
-    var Encoder = require('node-html-encoder').Encoder;
-    var encoder = new Encoder('entity');
-
     var buildingId = req.body['building'];
     var buildingName = req.body['building-name'];
     var address = req.body['address'];
     var gateway = req.body['gateway'];
     var ammeter = req.body['ammeter'];
     var title = req.body['title'];
-    var taskContent = encoder.htmlEncode(req.body['task-content']);
+    //var taskContent = encodeContent(req.body['task-content']);
+    var taskContent = req.body['task-content'];
     var time = moment().toISOString()
     var type = 1;
     var status = 11;
@@ -81,9 +93,10 @@ router.post('/delivery', function(req, res) {
         },
         timestamp: time,
         status: status
-    })
+    }, function() {
+        res.redirect('/task');
+    });
 
-    res.redirect('/task');
 });
 
 
@@ -106,35 +119,11 @@ router.get('/mine-details/:id', function(req, res) {
             throw new Error('Not Found');
         }
 
-        result.taskContent = decodeContent(result.taskContent);
+        //result.taskContent = decodeContent(result.taskContent);
+        //result.feedback.content = decodeContent(result.feedback.content);
 
         res.render('task/mine-details', { title: '任务信息', data: result });
     });
-});
-
-
-// 任务反馈
-router.post('/feedback', function(req, res) {
-    var id = req.body['id'];
-    var type = req.body['feedback-type'];
-    var content = req.body['feedback-content'];
-    var time = moment().toISOString();
-
-    var status = 0;
-    if (type == 1) {
-        status = 13;
-    } else {
-        status = 14;
-    }
-
-    mongodb.updateById(taskCollection, id, {
-        feedback: {
-            content: content,
-            time: time
-        },
-        status: status
-    });
-    res.redirect('/task/mine-list');
 });
 
 
@@ -157,7 +146,8 @@ router.get('/take-details/:id', function(req, res) {
             throw new Error('Not Found');
         }
 
-        result.taskContent = decodeContent(result.taskContent);
+        //result.taskContent = decodeContent(result.taskContent);
+        //result.feedback.content = decodeContent(result.feedback.content);
 
         res.render('task/take-details', { title: '任务信息', data: result });
     });
@@ -175,10 +165,90 @@ router.post('/take', function(req, res) {
             userName:  req.session.username,
             time: time
         },
+        timestamp: time,
         status: 12
+    }, function() {
+        res.redirect('/task/mine-list');
     });
-    res.redirect('/task/mine-list');
+
 });
 
+
+
+// 任务反馈
+router.post('/feedback', function(req, res) {
+    var id = req.body['id'];
+    var type = req.body['feedback-type'];
+    //var content = encodeContent(req.body['feedback-content']);
+    var content = req.body['feedback-content'];
+    var time = moment().toISOString();
+
+    var status = 0;
+    if (type == 1) {
+        status = 13;
+    } else {
+        status = 14;
+    }
+
+    mongodb.updateById(taskCollection, id, {
+        feedback: {
+            content: content,
+            userId: req.session.userid,
+            userName:  req.session.username,
+            time: time
+        },
+        timestamp: time,
+        status: status
+    }, function() {
+        res.redirect('/task/mine-list');
+    });
+
+});
+
+
+// 任务审核
+router.get('/audit/:id', function(req, res) {
+    var id = req.params.id;
+
+    mongodb.findById(taskCollection, id, function(result) {
+        if (result == null) {
+            throw new Error('Not Found');
+        }
+
+        res.render('task/audit', { title: '任务信息', data: result });
+    });
+})
+
+// 提交审核
+router.post('/audit', function(req, res) {
+    var id = req.body['id'];
+    var type = req.body['audit-type'];
+    var content = req.body['task-content'];
+    var status = req.body['status'];
+    var time = moment().toISOString();
+
+    if (status == 13) {
+        if (type == 1) {
+            status = 20;
+        } else {
+            status = 21;
+        }
+    } else if (status == 14) {
+        status = 22;
+    }
+
+    mongodb.updateById(taskCollection, id, {
+        taskContent: content,
+        audit: {
+            userId: req.session.userid,
+            userName:  req.session.username,
+            time: time
+        },
+        timestamp: time,
+        status: status
+    }, function() {
+        res.redirect('/task');
+    });
+});
 
 module.exports = router;

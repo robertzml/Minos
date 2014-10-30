@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var crypto = require('crypto');
 
-var mongodb = require('../models/mongodb');
+var mongodb = require('../lib/mongodb');
 
 /* GET users listing. */
 router.get('/', function(req, res) {

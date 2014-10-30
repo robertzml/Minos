@@ -81,7 +81,7 @@
                     {{ item.take.time|moment('dt') }}
                 </td>
                 <td>
-                    {{ item.status }}
+                    {{ item.status|status }}
                 </td>
                 <td>
                     <a href="/task/mine-details/{{ item._id }}" class="btn btn-info btn-sm" role="button"><i class="fa fa-check-circle"></i>&nbsp;查看</a>

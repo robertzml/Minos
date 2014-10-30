@@ -36,7 +36,7 @@
 <script type="text/javascript">
     $(function() {
         Minos.menuActive($('#task-index-menu'));
-        var oTable = Minos.initDatatable($('#task-table'));
+        var oTable = Minos.initDatatableWithFilter($('#task-table'));
         oTable.api().order( [ 4, 'desc' ] ).draw();
     });
 </script>

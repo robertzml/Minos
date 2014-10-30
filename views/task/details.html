@@ -32,14 +32,16 @@
         {% include "_details.html" with task only %}
         <hr />
         <!-- BEGIN FORM-->
-        <form class="form-horizontal" role="form">
-            <input type="hidden" value="{{ data._id }}" name="id">
+        <div class="form-horizontal">
             <div class="form-actions">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="row">
                             <div class="col-md-offset-3 col-md-9">
                                 <a class="btn btn-warning" role="button"><i class="fa fa-edit"></i>&nbsp;编辑</a>
+                                {% if data.status == 13 || data.status == 14 %}
+                                <a href="/task/audit/{{ data._id }}" class="btn green-jungle" role="button"><i class="fa fa-magic"></i>&nbsp;审核</a>
+                                {% endif %}
                                 <a href="/task" class="btn btn-primary" role="button"><i class="fa fa-list"></i>&nbsp;回到列表</a>
                             </div>
                         </div>
@@ -48,7 +50,7 @@
                     </div>
                 </div>
             </div>
-        </form>
+        </div>
         <!-- END FORM-->
     </div>
 </div>
