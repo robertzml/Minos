@@ -1,0 +1,111 @@
+{% extends '../layout.html' %}
+
+{% block css %}
+{% endblock %}
+
+
+{% block title %}
+<div class="page-title">
+    <h1><i class="fa fa-paper-plane fa-lg"></i>&nbsp;{{ title }} <small>电表网关维修</small></h1>
+</div>
+{% endblock %}
+
+{% block body %}
+<div class="portlet light bordered">
+    <div class="portlet-title">
+        <div class="caption">
+            <i class="fa fa-exclamation-circle"></i>&nbsp;任务: <strong>{{ data.title }}</strong>
+        </div>
+        <div class="tools">
+            <a href="javascript:;" class="collapse">
+            </a>
+            <a href="#portlet-config" data-toggle="modal" class="config">
+            </a>
+            <a href="javascript:;" class="reload">
+            </a>
+            <a href="javascript:;" class="remove">
+            </a>
+        </div>
+    </div>
+    <div class="portlet-body">
+        {% set task = { task: data } %}
+        {% include "_details.html" with task only %}
+        <hr />
+        <!-- BEGIN FORM-->
+        <p>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-offset-3 col-md-9">
+                            <a class="btn green-meadow" role="button" data-toggle="modal" href="#responsive"><i class="fa fa-check"></i>&nbsp;提交</a>
+                            <a href="/task/mine-list" class="btn btn-primary" role="button"><i class="fa fa-list"></i>&nbsp;回到列表</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                </div>
+            </div>
+        </p>
+        <!-- END FORM-->
+    </div>
+</div>
+
+<div id="responsive" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form class="form-horizontal" method="post" action="/task/feedback" id="feedback-form">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">反馈信息</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="scroller" style="height:300px;" data-always-visible="1" data-rail-visible1="1">
+                        <div class="form-body">
+                            <div class="alert alert-danger display-hide">
+                                <button class="close" data-close="alert"></button>
+                                请检查输入.
+                            </div>
+                            <div class="alert alert-success display-hide">
+                                <button class="close" data-close="alert"></button>
+                                输入检查成功.
+                            </div>
+                            <input type="hidden" value="{{ data._id }}" name="id">
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">完成情况</label>
+                                <div class="col-md-10">
+                                    <div class="radio-list">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="feedback-type" value="1" checked> 已解决 </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="feedback-type" value="2"> 存在问题 </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">备注说明</label>
+                                <div class="col-md-10">
+                                    <textarea name="feedback-content" id="feedback-content" class="form-control" rows="8"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn default">关闭</button>
+                    <button type="submit" class="btn green">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block script %}
+<script type="text/javascript">
+    $(function() {
+        Minos.menuActive($('#task-mine-menu'));
+        Minos.initFeedbackForm();
+    });
+</script>
+{% endblock %}

@@ -39,17 +39,23 @@
             {{ item.address }}
         </td>
         <td>
-            {{ item.time|moment('dt') }}
+            {{ item.delivery.time|moment('dt') }}
         </td>
         <td>
-            {{ item.deliveryUser.userName }}
+            {{ item.delivery.userName }}
         </td>
         <td>
             {{ item.status }}
         </td>
         <td>
+            {% if type == 10 %}
             <a href="/task/details/{{ item._id }}" class="btn btn-info btn-sm" role="button"><i class="fa fa-check-circle"></i>&nbsp;查看</a>
             <a href="/task/edit/{{ item._id }}" class="btn btn-warning btn-sm" role="button"><i class="fa fa-edit"></i>&nbsp;编辑</a>
+            {% elseif type == 11 %}
+            <a href="/task/take-details/{{ item._id }}" class="btn btn-info btn-sm" role="button"><i class="fa fa-check-circle"></i>&nbsp;查看</a>
+            {% else %}
+            <a href="/task/details/{{ item._id }}" class="btn btn-info btn-sm" role="button"><i class="fa fa-check-circle"></i>&nbsp;查看</a>
+            {% endif %}
         </td>
     </tr>
     {% endfor %}

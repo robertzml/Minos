@@ -25,7 +25,7 @@
         </div>
     </div>
     <div class="portlet-body">
-        {% set tasks = { tasks: data } %}
+        {% set tasks = { tasks: data, type: 10 } %}
         {% include "_list.html" with tasks only %}
     </div>
 </div>

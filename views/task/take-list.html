@@ -28,7 +28,7 @@
         </div>
     </div>
     <div class="portlet-body">
-        {% set tasks = { tasks: data } %}
+        {% set tasks = { tasks: data, type: 11 } %}
         {% include "_list.html" with tasks only %}
     </div>
 </div>
@@ -39,7 +39,8 @@
 <script type="text/javascript">
     $(function() {
         Minos.menuActive($('#task-take-menu'));
-
+        var oTable = Minos.initDatatable($('#task-table'));
+        oTable.api().order( [ 4, 'desc' ] ).draw();
     });
 </script>
 {% endblock %}
