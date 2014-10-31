@@ -42,8 +42,20 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(session({secret: 'minos project', resave: true, saveUninitialized: true }));
 app.use(express.static(path.join(__dirname, 'public')));
+
+if (app.get('env') === 'development') {
+    app.use(session({secret: 'minos project', resave: true, saveUninitialized: true }));
+} else {
+    var RedisStore = require('connect-redis')(session);
+    app.use(session({
+        store: new RedisStore(),
+        secret: 'minos project',
+        resave: true,
+        saveUninitialized: true
+    }));
+}
+
 
 app.use(function(req, res, next) {
     if(req.session.username) {
@@ -90,9 +102,6 @@ app.use(function(err, req, res, next) {
     });
 });
 
-
-
-app.locals.title2 = 'My App';
 
 app.locals.momentDateTime = function(datetime) {
     return moment(datetime).format("YYYY-MM-DD HH:mm:ss");

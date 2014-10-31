@@ -21,7 +21,8 @@ router.use(function (req, res, next) {
 router.get('/', function(req, res) {
 
     if(req.session.username) {
-        res.render('index', { title: '主页' });
+        //res.render('index', { title: '主页' });
+        res.redirect('/task');
     } else {
         res.redirect('user/login');
     }

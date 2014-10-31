@@ -16,6 +16,7 @@
     "swig": "~1.4.2",
     "mongodb": "~2.0",
     "express-session" : "~1.9",
-    "node-html-encoder": "*"
+    "node-html-encoder": "*",
+    "connect-redis": "~2.0"
   }
 }
