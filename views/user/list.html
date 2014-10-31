@@ -25,7 +25,60 @@
         </div>
     </div>
     <div class="portlet-body">
-
+        <table id="user-table" class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        用户ID
+                    </th>
+                    <th>
+                        用户名
+                    </th>
+                    <th>
+                        姓名
+                    </th>
+                    <th>
+                        用户组
+                    </th>
+                    <th>
+                        电话
+                    </th>
+                    <th>
+                        备注
+                    </th>
+                    <th>
+                        状态
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in data %}
+                <tr>
+                    <td>
+                        {{ item.id }}
+                    </td>
+                    <td>
+                        {{ item.name }}
+                    </td>
+                    <td>
+                        {{ item.userName }}
+                    </td>
+                    <td>
+                        {{ item.userGroupId }}
+                    </td>
+                    <td>
+                        {{ item.telephone }}
+                    </td>
+                    <td>
+                        {{ item.remark }}
+                    </td>
+                    <td>
+                        {{ item.status }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 </div>
 {% endblock %}
@@ -35,7 +88,7 @@
 <script type="text/javascript">
     $(function() {
         Minos.menuActive($('#user-list-menu'));
-        //var oTable = Minos.initDatatableWithFilter($('#task-table'));
+        var oTable = Minos.initDatatableWithFilter($('#user-table'));
         //oTable.api().order( [ 4, 'desc' ] ).draw();
     });
 </script>

@@ -6,7 +6,7 @@
 
 {% block title %}
 <div class="page-title">
-    <h1><i class="fa fa-paper-plane fa-lg"></i>&nbsp;{{ title }} <small>电表网关维修</small></h1>
+    <h1><i class="fa fa-paper-plane fa-lg"></i>&nbsp;{{ title }} <small>日常工作任务</small></h1>
 </div>
 {% endblock %}
 
@@ -85,6 +85,19 @@
                 </div>
                 <h3 class="form-section">任务说明</h3>
                 <!--/row-->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label col-md-2">任务类型<div class="col-md-9">
+                                <select class="form-control" name="type">
+                                    <option value="1">维修任务</option>
+                                    <option value="2">新增设备</option>
+                                    <option value="10">其它任务</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">

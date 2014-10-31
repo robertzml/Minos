@@ -2,11 +2,11 @@
 <div class="page-header-menu">
     <div class="container-fluid">
         <!-- BEGIN HEADER SEARCH BOX -->
-        <form class="search-form" action="extra_search.html" method="GET">
+        <form class="search-form" action="#" method="GET">
             <div class="input-group">
                 <input type="text" class="form-control" placeholder="Search" name="query">
                                 <span class="input-group-btn">
-                                <a href="javascript:;" class="btn submit"><i class="icon-magnifier"></i></a>
+                                <a href="javascript:;" class="btn submit"><i class="fa fa-search"></i></a>
                                 </span>
             </div>
         </form>
@@ -27,6 +27,7 @@
                         <li>
                             <div class="mega-menu-content">
                                 <div class="row">
+                                    {% if userGroupId == 100001 || userGroupId == 100002 %}
                                     <div class="col-md-4">
                                         <ul class="mega-menu-submenu">
                                             <li>
@@ -42,13 +43,9 @@
                                                     <i class="fa fa-paper-plane"></i>
                                                     任务下发 </a>
                                             </li>
-                                            <li>
-                                                <a href="ecommerce_orders_view.html" class="iconify">
-                                                    <i class="icon-tag"></i>
-                                                    Order View </a>
-                                            </li>
                                         </ul>
                                     </div>
+                                    {% endif %}
                                     <div class="col-md-4">
                                         <ul class="mega-menu-submenu">
                                             <li>
@@ -64,30 +61,25 @@
                                                     <i class="fa fa-stumbleupon"></i>
                                                     任务领取 </a>
                                             </li>
-                                            <li>
-                                                <a href="layout_top_bar_fixed.html" class="iconify">
-                                                    <i class="icon-bar-chart"></i>
-                                                    Fixed Top Bar </a>
-                                            </li>
                                         </ul>
                                     </div>
                                     <div class="col-md-4">
                                         <ul class="mega-menu-submenu">
                                             <li>
-                                                <h3>More Layouts</h3>
+                                                <h3>任务统计</h3>
                                             </li>
                                             <li>
-                                                <a href="layout_click_dropdowns.html" class="iconify">
+                                                <a href="#" class="iconify">
                                                     <i class="icon-speech"></i>
-                                                    Click vs. Hover Dropdowns </a>
+                                                    每月统计 </a>
                                             </li>
                                             <li>
-                                                <a href="layout_fontawesome_icons.html" class="iconify">
+                                                <a href="#" class="iconify">
                                                     <i class="icon-link"></i>
                                                     Layout with Fontawesome </a>
                                             </li>
                                             <li>
-                                                <a href="layout_glyphicons.html" class="iconify">
+                                                <a href="#" class="iconify">
                                                     <i class="icon-settings"></i>
                                                     Layout with Glyphicon </a>
                                             </li>
@@ -98,6 +90,7 @@
                         </li>
                     </ul>
                 </li>
+                {% if userGroupId == 100001 %}
                 <li class="menu-dropdown mega-menu-dropdown mega-menu-full ">
                     <a data-toggle="dropdown" href="javascript:;" class="dropdown-toggle">
                         UI Components <i class="fa fa-angle-down"></i>
@@ -199,6 +192,7 @@
                         </li>
                     </ul>
                 </li>
+                {% endif %}
                 {% if userGroupId == 100001 %}
                 <li class="menu-dropdown mega-menu-dropdown top-level-menu">
                     <a data-toggle="dropdown" href="javascript:;" class="dropdown-toggle">

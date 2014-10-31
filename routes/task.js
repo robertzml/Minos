@@ -70,7 +70,7 @@ router.post('/delivery', function(req, res) {
     var title = req.body['title'];
     var taskContent = req.body['task-content'];
     var time = moment().toISOString()
-    var type = 1;
+    var type = req.body['type'];
     var status = 11;
 
     mongodb.insert('task', {
@@ -139,7 +139,7 @@ router.get('/take-details/:id', function(req, res) {
             throw new Error('Not Found');
         }
 
-        res.render('task/take-details', { title: '任务信息', data: result });
+        res.render('task/take-details', { title: '任务领取', data: result });
     });
 });
 
@@ -179,15 +179,19 @@ router.post('/feedback', function(req, res) {
         status = 14;
     }
 
-    mongodb.updateById(taskCollection, id, {
-        feedback: {
-            content: content,
-            userId: req.session.userid,
-            userName:  req.session.username,
-            time: time
-        },
-        timestamp: time,
-        status: status
+    mongodb.updateExtend(taskCollection, id, {
+        $push: {
+            feedback: {
+                content: content,
+                userId: req.session.userid,
+                userName:  req.session.username,
+                time: time,
+                status: status
+        }},
+        $set: {
+            timestamp: time,
+            status: status
+        }
     }, function() {
         res.redirect('/task/mine-list');
     });
@@ -195,24 +199,11 @@ router.post('/feedback', function(req, res) {
 });
 
 
-// 任务审核
-router.get('/audit/:id', function(req, res) {
-    var id = req.params.id;
-
-    mongodb.findById(taskCollection, id, function(result) {
-        if (result == null) {
-            throw new Error('Not Found');
-        }
-
-        res.render('task/audit', { title: '任务信息', data: result });
-    });
-})
-
 // 提交审核
 router.post('/audit', function(req, res) {
     var id = req.body['id'];
     var type = req.body['audit-type'];
-    var content = req.body['task-content'];
+    var content = req.body['audit-content'];
     var status = req.body['status'];
     var time = moment().toISOString();
 
@@ -226,15 +217,20 @@ router.post('/audit', function(req, res) {
         status = 22;
     }
 
-    mongodb.updateById(taskCollection, id, {
-        taskContent: content,
-        audit: {
-            userId: req.session.userid,
-            userName:  req.session.username,
-            time: time
+    mongodb.updateExtend(taskCollection, id, {
+        $push: {
+            audit: {
+                content: content,
+                userId: req.session.userid,
+                userName: req.session.username,
+                time: time,
+                status: status
+            }
         },
-        timestamp: time,
-        status: status
+        $set: {
+            timestamp: time,
+            status: status
+        }
     }, function() {
         res.redirect('/task');
     });

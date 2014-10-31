@@ -1,56 +1,105 @@
 {% extends '../layout.html' %}
 
 {% block css %}
+<link rel="stylesheet" type="text/css" href="/css/todo.css">
 <link rel="stylesheet" type="text/css" href="/assets/global/plugins/bootstrap-summernote/summernote.css">
 {% endblock %}
 
 
 {% block title %}
 <div class="page-title">
-    <h1><i class="fa fa-paper-plane fa-lg"></i>&nbsp;{{ title }} <small>电表网关维修</small></h1>
+    <h1><i class="fa fa-paper-plane fa-lg"></i>&nbsp;{{ title }} <small>{{ data.title }}</small></h1>
 </div>
 {% endblock %}
 
 {% block body %}
-<div class="portlet light bordered">
-    <div class="portlet-title">
-        <div class="caption">
-            <i class="fa fa-exclamation-circle"></i>&nbsp;任务: <strong>{{ data.title }}</strong>
-            <span>状态: {{ data.status|status }}</span>
-        </div>
-        <div class="tools">
-            <a href="javascript:;" class="collapse">
-            </a>
-            <a href="#portlet-config" data-toggle="modal" class="config">
-            </a>
-            <a href="javascript:;" class="reload">
-            </a>
-            <a href="javascript:;" class="remove">
-            </a>
-        </div>
-    </div>
-    <div class="portlet-body">
-        {% set task = { task: data } %}
-        {% include "_details.html" with task only %}
-        <hr />
-        <!-- BEGIN FORM-->
-        <p>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="row">
-                        <div class="col-md-offset-3 col-md-9">
-                            {% if data.status == 21 || data.status == 22 %}
-                            <a class="btn green-meadow" role="button" data-toggle="modal" href="#responsive"><i class="fa fa-check"></i>&nbsp;提交</a>
-                            {% endif %}
-                            <a href="/task/mine-list" class="btn btn-primary" role="button"><i class="fa fa-list"></i>&nbsp;回到列表</a>
-                        </div>
-                    </div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="portlet light">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-exclamation-circle"></i>&nbsp;任务情况
                 </div>
-                <div class="col-md-6">
+                <div class="tools">
+                    <a href="javascript:;" class="collapse">
+                    </a>
+                    <a href="#portlet-config" data-toggle="modal" class="config">
+                    </a>
+                    <a href="javascript:;" class="reload">
+                    </a>
+                    <a href="javascript:;" class="remove">
+                    </a>
                 </div>
             </div>
-        </p>
-        <!-- END FORM-->
+            <div class="portlet-body">
+                <div class="row">
+                    <div class="col-md-5">
+                        <dl>
+                            <dt>任务名称</dt>
+                            <dd>{{ data.title }}</dd>
+
+                            <dt>建筑</dt>
+                            <dd>{{ data.buildingName }}</dd>
+
+                            <dt>地址</dt>
+                            <dd>{{ data.address }}</dd>
+
+                            <dt>网关号</dt>
+                            <dd>{{ data.gateway }}</dd>
+
+                            <dt>表号</dt>
+                            <dd>{{ data.ammeter }}</dd>
+
+                            <dt>发布人</dt>
+                            <dd>{{ data.delivery.userName }}</dd>
+
+                            <dt>发布时间</dt>
+                            <dd>{{ data.delivery.time|moment('dt') }}</dd>
+
+                            <dt>领取人</dt>
+                            <dd>{{ data.take.userName }}</dd>
+
+                            <dt>领取时间</dt>
+                            <dd>{{ data.take.time|moment('dt') }}</dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-7">
+                        <dl>
+                            <dt>任务说明</dt>
+                            <dd>
+                                <div class="task-content">
+                                    {% autoescape false %}
+                                    {{ data.taskContent }}
+                                    {% endautoescape %}
+                                </div>
+                            </dd>
+                            <dt>任务类型</dt>
+                            <dd>{{ data.type|tasktype }}</dd>
+                            <dt>任务状态</dt>
+                            <dd>
+                                {{ data.status|status }}
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+
+                <hr />
+                <p>
+                    {% if data.status == 12 || data.status == 21 || data.status == 22 %}
+                    <a class="btn btn-circle green-meadow" role="button" data-toggle="modal" href="#responsive"><i class="fa fa-check"></i>&nbsp;提交</a>
+                    {% endif %}
+                    <a href="/task/mine-list" class="btn btn-circle btn-primary" role="button"><i class="fa fa-list"></i>&nbsp;回到列表</a>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        {% set task = { feedback: data.feedback } %}
+        {% include "_feedback.html" with task only %}
+    </div>
+    <div class="col-md-3">
+        {% set task = { audit: data.audit } %}
+        {% include "_audit.html" with task only %}
     </div>
 </div>
 
@@ -88,7 +137,7 @@
                             <div class="form-group">
                                 <label class="col-md-2 control-label">备注说明</label>
                                 <div class="col-md-10">
-                                    <textarea name="feedback-content" id="summernote" class="form-control" rows="8">{{ data.feedback.content }}</textarea>
+                                    <textarea name="feedback-content" id="summernote" class="form-control" rows="8"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -111,7 +160,7 @@
 <script type="text/javascript">
     $(function() {
         Minos.menuActive($('#task-mine-menu'));
-        Minos.initFeedbackForm();
+        Mform.initFeedbackForm();
     });
 </script>
 {% endblock %}

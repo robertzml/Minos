@@ -71,7 +71,7 @@
     {% for item in tasks %}
         <tr>
             <td>{{ item.title }}</td>
-            <td>{{ item.type }}</td>
+            <td>{{ item.type|tasktype }}</td>
             <td>
                 {{ item.buildingName }}
             </td>

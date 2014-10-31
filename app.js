@@ -28,7 +28,7 @@ swig.setDefaults({ cache: false });
 
 swig.setFilter('moment', swigFilter.moment);
 swig.setFilter('status', swigFilter.status);
-
+swig.setFilter('tasktype', swigFilter.tasktype);
 
 
 // view engine setup

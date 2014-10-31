@@ -90,7 +90,8 @@ router.post('/changepassword', function(req, res) {
 
 // 用户列表
 router.get('/list', function(req, res) {
-    mongodb.find(user, {}, function(result) {
+
+    mongodb.find(userCollection, {}, function(result) {
         res.render('user/list', { title: '用户列表', data: result });
     });
 

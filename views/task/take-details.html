@@ -6,7 +6,7 @@
 
 {% block title %}
 <div class="page-title">
-    <h1><i class="fa fa-paper-plane fa-lg"></i>&nbsp;{{ title }} <small>电表网关维修</small></h1>
+    <h1><i class="fa fa-paper-plane fa-lg"></i>&nbsp;{{ title }}</h1>
 </div>
 {% endblock %}
 
@@ -14,7 +14,7 @@
 <div class="portlet light bordered">
     <div class="portlet-title">
         <div class="caption">
-            <i class="fa fa-exclamation-circle"></i>&nbsp;任务: <strong>{{ data.title }}</strong>
+            <i class="fa fa-exclamation-circle"></i>&nbsp;任务名称: <strong>{{ data.title }}</strong>
         </div>
         <div class="tools">
             <a href="javascript:;" class="collapse">
@@ -28,8 +28,107 @@
         </div>
     </div>
     <div class="portlet-body">
-        {% set task = { task: data } %}
-        {% include "_details.html" with task only %}
+        <div class="form-horizontal">
+            <h3 class="form-section">位置信息</h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">建筑:</label>
+                        <div class="col-md-9">
+                            <p class="form-control-static">
+                                {{ data.buildingName }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!--/span-->
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">地址:</label>
+                        <div class="col-md-9">
+                            <p class="form-control-static">
+                                {{ data.address }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!--/span-->
+            </div>
+            <!--/row-->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">网关号:</label>
+                        <div class="col-md-9">
+                            <p class="form-control-static">
+                                {{ data.gateway }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!--/span-->
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">表号:</label>
+                        <div class="col-md-9">
+                            <p class="form-control-static">
+                                {{ data.ammeter }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!--/span-->
+            </div>
+            <!--/row-->
+            <h3 class="form-section">任务信息</h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">发布人:</label>
+                        <div class="col-md-9">
+                            <p class="form-control-static">
+                                {{ data.delivery.userName }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">发布时间:</label>
+                        <div class="col-md-9">
+                            <p class="form-control-static">
+                                {{ data.delivery.time|moment('dt') }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">任务内容:</label>
+                        <div class="col-md-9">
+                            <div class="task-text">
+                                {% autoescape false %}
+                                {{ data.taskContent }}
+                                {% endautoescape %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">任务类型:</label>
+                        <div class="col-md-9">
+                            <p class="form-control-static">
+                                {{ data.type|tasktype }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <hr />
         <!-- BEGIN FORM-->
         <form class="form-horizontal" method="post" action="/task/take" id="take-form" role="form">

@@ -1,0 +1,37 @@
+/* This is the custom css file */
+
+body, h1, h2, h3, h4, h5, h6{
+	font-family: '微软雅黑';
+}
+
+.page-header .page-header-top .top-menu .navbar-nav > li.dropdown > .dropdown-menu, .page-header .page-header-menu .hor-menu .navbar-nav > li .dropdown-menu li > a,
+.page-header .page-header-menu .hor-menu .navbar-nav > li.mega-menu-dropdown > .dropdown-menu .mega-menu-content .mega-menu-submenu li > a {
+	font-family: '微软雅黑';
+}
+
+.page-header .page-header-top .page-logo .logo-default {
+	margin: 10px 0;
+}
+
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+	vertical-align: middle;
+}
+
+.task-text {
+	padding-top: 8px;
+}
+
+.caption span {
+	margin-left:20px;
+}
+
+dd {
+	margin-top: 5px;
+	margin-left: 10px;
+	margin-bottom: 10px;
+}
+
+div.task-content {
+	background: none repeat scroll 0 0 #d3f6ef;
+	padding: 10px;
+}

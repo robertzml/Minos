@@ -1,0 +1,39 @@
+<div class="portlet light">
+    <div class="portlet-title">
+        <div class="caption">
+            <i class="fa fa-lightbulb-o"></i>&nbsp;审核情况
+        </div>
+        <div class="tools">
+            <a href="javascript:;" class="collapse">
+            </a>
+            <a href="#portlet-config" data-toggle="modal" class="config">
+            </a>
+            <a href="javascript:;" class="reload">
+            </a>
+            <a href="javascript:;" class="remove">
+            </a>
+        </div>
+    </div>
+    <div class="portlet-body">
+        <div class="scroller" style="max-height: 800px;" data-always-visible="0" data-rail-visible="0" data-handle-color="#dae3e7">
+            <div class="todo-tasklist">
+                {% for item in audit %}
+                <div class="todo-tasklist-item todo-tasklist-item-border-blue">
+                    <div class="todo-tasklist-item-title">
+                        {{ item.userName }}
+                    </div>
+                    <div class="todo-tasklist-item-text">
+                        {% autoescape false %}
+                        {{ item.content }}
+                        {% endautoescape %}
+                    </div>
+                    <div class="todo-tasklist-controls pull-left">
+                        <span class="todo-tasklist-date"><i class="fa fa-calendar"></i> {{ item.time|moment('dt') }} </span>
+                        {% autoescape false %}{{ item.status|status('badge') }}{% endautoescape %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
