@@ -13,15 +13,12 @@
         <div class="caption">
             <i class="fa fa-list"></i>&nbsp;任务列表
         </div>
-        <div class="tools">
-            <a href="javascript:;" class="collapse">
-            </a>
-            <a href="#portlet-config" data-toggle="modal" class="config">
-            </a>
-            <a href="javascript:;" class="reload">
-            </a>
-            <a href="javascript:;" class="remove">
-            </a>
+        <div class="actions">
+            <div id="task-range" class="btn btn-info">
+                <i class="fa fa-calendar"></i>
+                &nbsp; <span></span>
+                <b class="fa fa-angle-down"></b>
+            </div>
         </div>
     </div>
     <div class="portlet-body">
@@ -36,8 +33,13 @@
 <script type="text/javascript">
     $(function() {
         Minos.menuActive($('#task-index-menu'));
-        var oTable = Minos.initDatatableWithFilter($('#task-table'));
+        Minos.initTaskTable($('#task-table'));
+       /* var oTable = Minos.initDatatableWithFilter($('#task-table'));
         oTable.api().order( [ 4, 'desc' ] ).draw();
+
+        Minos.initDataRangePicker($('#task-range'), function(startDate, endData) {
+
+        });*/
     });
 </script>
 {% endblock %}

@@ -5,7 +5,8 @@ body, h1, h2, h3, h4, h5, h6{
 }
 
 .page-header .page-header-top .top-menu .navbar-nav > li.dropdown > .dropdown-menu, .page-header .page-header-menu .hor-menu .navbar-nav > li .dropdown-menu li > a,
-.page-header .page-header-menu .hor-menu .navbar-nav > li.mega-menu-dropdown > .dropdown-menu .mega-menu-content .mega-menu-submenu li > a {
+.page-header .page-header-menu .hor-menu .navbar-nav > li.mega-menu-dropdown > .dropdown-menu .mega-menu-content .mega-menu-submenu li > a,
+.dropdown-menu {
 	font-family: '微软雅黑';
 }
 

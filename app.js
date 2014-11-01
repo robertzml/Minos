@@ -49,7 +49,7 @@ if (app.get('env') === 'development') {
 } else {
     var RedisStore = require('connect-redis')(session);
     app.use(session({
-        store: new RedisStore(),
+        store: new RedisStore({ prefix: 'minos:' }),
         secret: 'minos project',
         resave: true,
         saveUninitialized: true

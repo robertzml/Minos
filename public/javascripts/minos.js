@@ -2,6 +2,9 @@
 
 var Minos = function() {
 
+    var startDate = moment().subtract(29, 'days');
+    var endDate = moment();
+
     var handleBuildingList = function($dom) {
 
         var url = 'http://202.195.145.230:8001/api/building';
@@ -61,43 +64,7 @@ var Minos = function() {
     }
 
     /* just init the datatable */
-    var handleInitDatatable = function($dom) {
-
-        var oTable = $dom.dataTable({
-            "order": [],
-
-            "lengthMenu": [
-                [5, 10, 20, -1],
-                [5, 10, 20, "All"] // change per page values here
-            ],
-            // set the initial value
-            "pageLength": 10,
-
-            "pagingType": "bootstrap_full_number",
-
-            "language": {
-                "lengthMenu": "  _MENU_ 记录",
-                "sLengthMenu": "每页 _MENU_ 条记录",
-                "sInfo": "显示 _START_ 至 _END_ 共有 _TOTAL_ 条记录",
-                "sInfoEmpty": "记录为空",
-                "sInfoFiltered": " - 从 _MAX_ 条记录中",
-                "sZeroRecords": "结果为空",
-                "sSearch": "搜索:",
-                "paginate": {
-                    "previous":"Prev",
-                    "next": "Next",
-                    "last": "Last",
-                    "first": "First"
-                }
-            },
-
-            "dom": "<'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12' p>>" // horizobtal scrollable datatable
-        });
-        return oTable;
-    }
-
-    /* filter table */
-    var handleInitDatatable2 = function($dom) {
+    var handleInitDatatable = function($dom, filter) {
 
         var oTable = $dom.dataTable({
             "order": [],
@@ -130,28 +97,96 @@ var Minos = function() {
             "dom": "<'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12' p>>" // horizobtal scrollable datatable
         });
 
-        $dom.find("tfoot th").each(function (i) {
-            if ($(this).attr('data-filter') == 'true') {
+        if(filter) {
+            $dom.find("tfoot th").each(function (i) {
+                if ($(this).attr('data-filter') == 'true') {
 
-                var select = $('<select class="form-control"><option value=""></option></select>')
-                    .appendTo($(this).empty())
-                    .on('change', function () {
-                        var val = $(this).val();
+                    var select = $('<select class="form-control"><option value=""></option></select>')
+                        .appendTo($(this).empty())
+                        .on('change', function () {
+                            var val = $(this).val();
 
-                        oTable.api().column(i)
-                            .search(val ? '^' + $(this).val() + '$' : val, true, false)
-                            .draw();
+                            oTable.api().column(i)
+                                .search(val ? '^' + $(this).val() + '$' : val, true, false)
+                                .draw();
+                        });
+
+                    oTable.api().column(i).data().unique().sort().each(function (d, j) {
+                        select.append('<option value="' + d + '">' + d + '</option>')
                     });
-
-                oTable.api().column(i).data().unique().sort().each(function (d, j) {
-                    select.append('<option value="' + d + '">' + d + '</option>')
-                });
-            }
-        });
+                }
+            });
+        }
 
         return oTable;
     }
 
+
+    var handleDateRangePickers = function ($dom, callback) {
+        if (!jQuery().daterangepicker) {
+            return;
+        }
+
+        //var startDate = moment().subtract(29, 'days');
+        //var endDate = moment();
+
+        console.log(startDate.format('YYYY-MM-DD'));
+        console.log(endDate.format('YYYY-MM-DD'));
+
+        $dom.daterangepicker({
+            opens: 'left',
+            startDate: moment().subtract(29, 'days'),
+            endDate: moment(),
+            minDate: '2014-01-01',
+            maxDate: '2020-12-31',
+            dateLimit: {
+                days: 90
+            },
+            showDropdowns: true,
+            showWeekNumbers: true,
+            timePicker: false,
+            timePickerIncrement: 1,
+            timePicker12Hour: true,
+            ranges: {
+                '今天': [moment(), moment()],
+                '昨天': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                '最近7天': [moment().subtract(6, 'days'), moment()],
+                '最近30天': [moment().subtract(29, 'days'), moment()],
+                '上周': [moment().day(-6), moment().day(0)],
+                '本周': [moment().day(1), moment().day(7)],
+                '本月': [moment().startOf('month'), moment().endOf('month')],
+                '上月': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            },
+            buttonClasses: ['btn'],
+            applyClass: 'green',
+            cancelClass: 'default',
+            format: 'YYYY-MM-DD',
+            separator: ' 至 ',
+            locale: {
+                applyLabel: '查询',
+                cancelLabel: '取消',
+                fromLabel: '开始',
+                toLabel: '结束',
+                customRangeLabel: '自定义',
+                daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
+                monthNames: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                firstDay: 1
+            }
+        }, function (start, end) {
+            $dom.find('span').html(start.format('YYYY-MM-DD') + ' 至 ' + end.format('YYYY-MM-DD'));
+        }).on('apply.daterangepicker', function(ev, picker) {
+            console.log(picker.startDate.format('YYYY-MM-DD'));
+            console.log(picker.endDate.format('YYYY-MM-DD'));
+            startDate = picker.startDate;
+            endDate = picker.endDate;
+
+            callback(picker.startDate, picker.endDate);
+        });
+
+        //Set the initial state of the picker label
+        $dom.find('span').html(moment().subtract(29, 'days').format('YYYY-MM-DD') + ' 至 ' + moment().format('YYYY-MM-DD'));
+        callback(moment().subtract(29, 'days'), moment());
+    }
 
     return {
         menuActive: function($dom) {
@@ -178,7 +213,42 @@ var Minos = function() {
         },
 
         initDatatableWithFilter: function($dom) {
-            return handleInitDatatable2($dom);
+            return handleInitDatatable($dom, true);
+        },
+
+        initTaskTable: function($dom) {
+            var oTable = handleInitDatatable($('#task-table'), true);
+            oTable.api().order( [ 4, 'desc' ] ).draw();
+
+            $.fn.dataTable.ext.search.push(
+                function( settings, data, dataIndex ) {
+
+                    var dt = moment(data[4]);
+
+                    var f = moment(dt).isBefore(endDate) && moment(dt).isAfter(startDate);
+                    return f;
+                }
+            );
+
+            handleDateRangePickers($('#task-range'), function(startDate, endDate) {
+
+
+                oTable.api().draw();
+
+                /*var filteredData = oTable.api().column( 4 )
+                    .data()
+                    .filter( function ( value, index ) {
+                        var dt = moment(value);
+                        var f = moment(dt).isBefore(endDate);
+                        console.log(f);
+                        return f;
+                    });
+                console.log(filteredData);*/
+            });
+        },
+
+        initDataRangePicker: function($dom, callback) {
+            handleDateRangePickers($dom, callback);
         },
 
         parseDatetime: function(dt) {

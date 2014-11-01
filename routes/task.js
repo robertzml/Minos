@@ -164,7 +164,6 @@ router.post('/take', function(req, res) {
 });
 
 
-
 // 任务反馈
 router.post('/feedback', function(req, res) {
     var id = req.body['id'];
@@ -233,6 +232,16 @@ router.post('/audit', function(req, res) {
         }
     }, function() {
         res.redirect('/task');
+    });
+});
+
+
+// 任务数据
+router.get('/get-data', function(req, res) {
+
+    mongodb.find(taskCollection, {}, function(result) {
+        var data = { data: result };
+        res.json(data);
     });
 });
 
