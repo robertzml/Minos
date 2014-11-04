@@ -91,7 +91,9 @@
                 {{ item.take.userName }}
             </td>
             <td>
-                {{ item.status|status }}
+                {% autoescape false %}
+                {{ item.status|status('label') }}
+                {% endautoescape %}
             </td>
             <td>
                 {% if type == 10 %}

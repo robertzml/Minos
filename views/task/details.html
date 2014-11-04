@@ -85,9 +85,11 @@
 
                 <hr />
                 <p>
+					{% if userGroupId == 100001 || userGroupId == 100002 %}
                     {% if data.status == 13 || data.status == 14 %}
                     <a data-toggle="modal" href="#responsive" class="btn btn-circle green-jungle" role="button"><i class="fa fa-magic"></i>&nbsp;审核</a>
                     {% endif %}
+					{% endif %}
                     <a href="/task" class="btn btn-circle btn-primary" role="button"><i class="fa fa-list"></i>&nbsp;回到列表</a>
                 </p>
             </div>

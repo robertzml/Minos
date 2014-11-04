@@ -4,7 +4,6 @@ var express = require('express');
 var router = express.Router();
 var moment = require('moment');
 
-//var status = require('../models/entitystatus');
 var mongodb = require('../lib/mongodb');
 
 var taskCollection = 'task';
@@ -34,7 +33,7 @@ router.get('/', function(req, res) {
 
     mongodb.find(taskCollection, {}, function(result) {
 
-        res.render('task/index', { title: '任务总览', data: result })
+        res.render('task/index', { title: '任务总览', data: result });
     });
 });
 

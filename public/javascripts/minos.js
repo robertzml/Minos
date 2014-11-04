@@ -112,7 +112,12 @@ var Minos = function() {
                         });
 
                     oTable.api().column(i).data().unique().sort().each(function (d, j) {
-                        select.append('<option value="' + d + '">' + d + '</option>')
+                        if ($(d).html()) {
+                            select.append('<option value="' + $(d).html() + '">' + $(d).html() + '</option>')
+                        } else {
+                            select.append('<option value="' + d + '">' + d + '</option>')
+                        }
+
                     });
                 }
             });
@@ -140,7 +145,7 @@ var Minos = function() {
             minDate: '2014-01-01',
             maxDate: '2020-12-31',
             dateLimit: {
-                days: 90
+                days: 120
             },
             showDropdowns: true,
             showWeekNumbers: true,
@@ -188,6 +193,62 @@ var Minos = function() {
         callback(moment().subtract(29, 'days'), moment());
     }
 
+    var handleTaskType = function(input) {
+        var val = parseInt(input);
+        var output = '';
+        switch (val) {
+            case 1:
+                output = '维修任务';
+                break;
+            case 2:
+                output = '新增设备';
+                break;
+            case 10:
+                output = '其它任务';
+                break;
+        }
+
+        return output;
+    }
+
+    var handleTaskStatus = function(input) {
+        var val = parseInt(input);
+        var output = '';
+        var style = '';
+        switch(val) {
+            case 11:
+                output = '新任务';
+                style = 'bg-blue';
+                break;
+            case 12:
+                output = '已领取';
+                style = 'bg-purple';
+                break;
+            case 13:
+                output = '已修理';
+                style = 'bg-purple-medium';
+                break;
+            case 14:
+                output = '存在问题';
+                style = 'bg-purple-plum';
+                break;
+            case 20:
+                output = '任务完成';
+                style = 'bg-green';
+                break;
+            case 21:
+                output = '审核未通过';
+                style = 'bg-blue-chambray';
+                break;
+            case 22:
+                output = '问题解决';
+                style = 'bg-blue-steel';
+                break;
+        }
+
+        return output;
+    }
+
     return {
         menuActive: function($dom) {
 
@@ -217,7 +278,7 @@ var Minos = function() {
         },
 
         initTaskTable: function($dom) {
-            var oTable = handleInitDatatable($('#task-table'), true);
+            var oTable = handleInitDatatable($dom, true);
             oTable.api().order( [ 4, 'desc' ] ).draw();
 
             $.fn.dataTable.ext.search.push(
@@ -247,9 +308,69 @@ var Minos = function() {
             });
         },
 
+        initStatisticTable: function($dom) {
+
+            var oTable = $dom.dataTable({
+                "order": [],
+
+                "lengthMenu": [
+                    [5, 10, 20, -1],
+                    [5, 10, 20, "All"] // change per page values here
+                ],
+
+                "ajax": "/statistic/task-count",
+
+                "columns": [
+                    { "data": "_id.type" },
+                    { "data": "_id.status" },
+                    { "data": "count" }
+
+                ],
+
+                "columnDefs": [{
+                    "targets": 0,
+                    "data": "_id.type",
+                    "render": function (data, type, full, meta) {
+                        return handleTaskType(data);
+                    }
+                }, {
+                    "targets": 1,
+                    "data": "_id.status",
+                    "render": function (data, type, full, meta) {
+                        return handleTaskStatus(data);
+                    }
+                }],
+
+                // set the initial value
+                "pageLength": 10,
+
+                "pagingType": "bootstrap_full_number",
+
+                "language": {
+                    "lengthMenu": "  _MENU_ 记录",
+                    "sLengthMenu": "每页 _MENU_ 条记录",
+                    "sInfo": "显示 _START_ 至 _END_ 共有 _TOTAL_ 条记录",
+                    "sInfoEmpty": "记录为空",
+                    "sInfoFiltered": " - 从 _MAX_ 条记录中",
+                    "sZeroRecords": "结果为空",
+                    "sSearch": "搜索:",
+                    "paginate": {
+                        "previous":"Prev",
+                        "next": "Next",
+                        "last": "Last",
+                        "first": "First"
+                    }
+                },
+
+                "dom": "<'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12' p>>" // horizobtal scrollable datatable
+            });
+
+        },
+
         initDataRangePicker: function($dom, callback) {
             handleDateRangePickers($dom, callback);
         },
+
 
         parseDatetime: function(dt) {
             return moment(dt).format("YYYY-MM-DD HH:mm:ss");

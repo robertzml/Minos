@@ -13,6 +13,7 @@ var swigFilter = require('./lib/swigFilter');
 var routes = require('./routes/index');
 var user = require('./routes/user');
 var task = require('./routes/task');
+var statistic = require('./routes/statistic');
 
 var app = express();
 
@@ -69,7 +70,7 @@ app.use(function(req, res, next) {
 app.use('/', routes);
 app.use('/user', user);
 app.use('/task', task);
-
+app.use('/statistic', statistic);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

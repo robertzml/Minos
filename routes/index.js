@@ -21,8 +21,13 @@ router.use(function (req, res, next) {
 router.get('/', function(req, res) {
 
     if(req.session.username) {
+        if (req.session.userGroupId == 100001 || req.session.userGroupId == 100002) {
+            res.redirect('/task');
+        } else {
+            res.redirect('/task/mine-list');
+        }
         //res.render('index', { title: '主页' });
-        res.redirect('/task');
+
     } else {
         res.redirect('user/login');
     }
