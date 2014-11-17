@@ -198,10 +198,13 @@ var Minos = function() {
         var output = '';
         switch (val) {
             case 1:
-                output = '维修任务';
+                output = '电表维修';
                 break;
             case 2:
                 output = '新增设备';
+                break;
+            case 3:
+                output = '水表维修';
                 break;
             case 10:
                 output = '其它任务';
