@@ -2,7 +2,7 @@
 
 var Minos = function() {
 
-    var startDate = moment().subtract(29, 'days');
+    var startDate = moment('2014-01-01');
     var endDate = moment();
 
     var handleBuildingList = function($dom) {
@@ -132,20 +132,14 @@ var Minos = function() {
             return;
         }
 
-        //var startDate = moment().subtract(29, 'days');
-        //var endDate = moment();
-
-        console.log(startDate.format('YYYY-MM-DD'));
-        console.log(endDate.format('YYYY-MM-DD'));
-
         $dom.daterangepicker({
             opens: 'left',
-            startDate: moment().subtract(29, 'days'),
+            startDate: moment('2014-01-01'),
             endDate: moment(),
             minDate: '2014-01-01',
             maxDate: '2020-12-31',
             dateLimit: {
-                days: 120
+                days: 180
             },
             showDropdowns: true,
             showWeekNumbers: true,
@@ -153,6 +147,7 @@ var Minos = function() {
             timePickerIncrement: 1,
             timePicker12Hour: true,
             ranges: {
+                '全部': [moment('2014-01-01'), moment()],
                 '今天': [moment(), moment()],
                 '昨天': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
                 '最近7天': [moment().subtract(6, 'days'), moment()],
@@ -189,8 +184,8 @@ var Minos = function() {
         });
 
         //Set the initial state of the picker label
-        $dom.find('span').html(moment().subtract(29, 'days').format('YYYY-MM-DD') + ' 至 ' + moment().format('YYYY-MM-DD'));
-        callback(moment().subtract(29, 'days'), moment());
+        $dom.find('span').html(moment('2014-01-01').format('YYYY-MM-DD') + ' 至 ' + moment().format('YYYY-MM-DD'));
+        callback(moment('2014-01-01'), moment());
     }
 
     var handleTaskType = function(input) {
@@ -296,18 +291,8 @@ var Minos = function() {
 
             handleDateRangePickers($('#task-range'), function(startDate, endDate) {
 
-
                 oTable.api().draw();
 
-                /*var filteredData = oTable.api().column( 4 )
-                    .data()
-                    .filter( function ( value, index ) {
-                        var dt = moment(value);
-                        var f = moment(dt).isBefore(endDate);
-                        console.log(f);
-                        return f;
-                    });
-                console.log(filteredData);*/
             });
         },
 
@@ -368,6 +353,7 @@ var Minos = function() {
                 "dom": "<'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12' p>>" // horizobtal scrollable datatable
             });
 
+            return oTable;
         },
 
         initDataRangePicker: function($dom, callback) {
