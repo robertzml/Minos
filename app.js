@@ -43,7 +43,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'app')));
 
 if (app.get('env') === 'development') {
     app.use(session({secret: 'minos project', resave: true, saveUninitialized: true }));
@@ -66,6 +66,11 @@ app.use(function(req, res, next) {
     next();
 });
 
+
+// angular启动页
+app.get('/', function (req, res) {
+    res.sendFile('app/index.html');
+});
 
 app.use('/', routes);
 app.use('/user', user);
@@ -92,6 +97,7 @@ if (app.get('env') === 'development') {
         });
     });
 }
+
 
 // production error handler
 // no stacktraces leaked to user
