@@ -57,7 +57,7 @@ if (app.get('env') === 'development') {
     }));
 }
 
-
+/*
 app.use(function(req, res, next) {
     if(req.session.username) {
         app.locals.username = req.session.username;
@@ -65,7 +65,7 @@ app.use(function(req, res, next) {
     }
     next();
 });
-
+*/
 
 // angular启动页
 app.get('/', function (req, res) {

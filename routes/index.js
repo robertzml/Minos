@@ -4,7 +4,7 @@ var router = express.Router();
 
 // a middleware with no mount path, gets executed for every request to the router
 // check login middleware
-router.use(function (req, res, next) {
+/*router.use(function (req, res, next) {
 
     if(req.session.username) {
         next();
@@ -15,7 +15,7 @@ router.use(function (req, res, next) {
             res.redirect('/user/login');
     }
 
-});
+});*/
 
 /* GET home page. */
 router.get('/', function(req, res) {
